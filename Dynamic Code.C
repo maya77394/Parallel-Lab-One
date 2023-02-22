@@ -1,4 +1,3 @@
-// Compute the Mandelbrot set in parallel with dynamic task assignment
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -22,7 +21,6 @@ int main(int argc, char** argv) {
     int start_task = rank * tasks_per_proc;
     int end_task = fmin(start_task + tasks_per_proc, num_tasks);
 
-    // Compute Mandelbrot set for assigned tasks
     int mandelbrot[HEIGHT][WIDTH] = {0};
     for (int task = start_task; task < end_task; task++) {
         int x = task % WIDTH;
@@ -62,7 +60,6 @@ int main(int argc, char** argv) {
     MPI_Gatherv(&(mandelbrot[0][start_task]), end_task - start_task, MPI_INT,
                 mandelbrot_all, recvcounts, displs, MPI_INT, 0, MPI_COMM_WORLD);
 
-    // Save Mandelbrot set to file in root process
     if (rank == 0) {
         FILE* fp = fopen("mandelbrot.ppm", "wb");
         fprintf(fp, "P6 %d %d 255\n", WIDTH, HEIGHT);
