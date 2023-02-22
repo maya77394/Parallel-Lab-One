@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include <mpi.h>
+#include <time.h>
+
 
 #define MASTER_RANK 0
 
@@ -34,6 +36,7 @@ void calculate_mandelbrot(int width, int height, int start_row, int end_row, dou
 }
 
 int main(int argc, char** argv) {
+    start = clock();
     int width = 800, height = 800;
     double left = -2.0, right = 1.0, lower = -1.5, upper = 1.5;
     int max_iterations = 1000;
@@ -76,5 +79,9 @@ int main(int argc, char** argv) {
     
     free(local_output);
     MPI_Finalize();
+    
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("CPU time used: %f seconds\n", cpu_time_used);
     return 0;
 }
