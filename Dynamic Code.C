@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <math.h>
 #include <mpi.h>
 
@@ -8,6 +9,10 @@
 #define MAX_ITER 1000
 
 int main(int argc, char** argv) {
+    clock_t start, end;
+    double cpu_time_used;
+    start = clock();
+    
     int rank, size;
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -77,5 +82,10 @@ int main(int argc, char** argv) {
     }
 
     MPI_Finalize();
+    
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("CPU time used: %f seconds\n", cpu_time_used);
+    
     return 0;
 }
